@@ -3,146 +3,144 @@
 ]
 
 
-# The Art of Command Line
+# 命令行的艺术
 
 [![Join the chat at https://gitter.im/jlevy/the-art-of-command-line](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jlevy/the-art-of-command-line?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-- [Meta](#meta)
-- [Basics](#basics)
-- [Everyday use](#everyday-use)
-- [Processing files and data](#processing-files-and-data)
-- [System debugging](#system-debugging)
-- [One-liners](#one-liners)
-- [Obscure but useful](#obscure-but-useful)
-- [OS X only](#os-x-only)
-- [More resources](#more-resources)
-- [Disclaimer](#disclaimer)
+- [必读](#必读)
+- [基础](#基础)
+- [日常使用](#日常使用)
+- [文件及数据处理](#文件及数据处理)
+- [系统调试](#系统调试)
+- [单行脚本](#单行脚本)
+- [冷门但有用](#冷门但有用)
+- [仅限 OS X 系统](#仅限-os-x-系统)
+- [更多资源](#更多资源)
+- [免责声明](#免责声明)
+- [授权条款](#授权条款)
 
 
 ![curl -s 'https://raw.githubusercontent.com/jlevy/the-art-of-command-line/master/README.md' | egrep -o '`\w+`' | tr -d '`' | cowsay -W50](cowsay.png)
 
-Fluency on the command line is a skill often neglected or considered arcane, but it improves your flexibility and productivity as an engineer in both obvious and subtle ways. This is a selection of notes and tips on using the command-line that we've found useful when working on Linux. Some tips are elementary, and some are fairly specific, sophisticated, or obscure. This page is not long, but if you can use and recall all the items here, you know a lot.
+熟练使用命令行是一种常常被忽视，或被认为难以掌握的技能，但实际上，它会提高你作为工程师的灵活性以及生产力。本文是一份我在 Linux 上工作时，发现的一些命令行使用技巧的摘要。有些技巧非常基础，而另一些则相当复杂，甚至晦涩难懂。这篇文章并不长，但当你能够熟练掌握这里列出的所有技巧时，你就学会了很多关于命令行的东西了。
 
-This work is the result of [many authors and translators](AUTHORS.md).
-Much of this
-[originally](http://www.quora.com/What-are-some-lesser-known-but-useful-Unix-commands)
-[appeared](http://www.quora.com/What-are-the-most-useful-Swiss-army-knife-one-liners-on-Unix)
-on [Quora](http://www.quora.com/What-are-some-time-saving-tips-that-every-Linux-user-should-know),
-but given the interest there, it seemed worth using GitHub, where people more talented than the original author could readily suggest improvements. If you see an error or something that could be better, please submit an issue or PR! (Of course please review the meta section and existing PRs/issues first.)
+这篇文章是[许多作者和译者](AUTHORS.md)共同的成果。这里的大部分内容
+[首次](http://www.quora.com/What-are-some-lesser-known-but-useful-Unix-commands)
+[出现](http://www.quora.com/What-are-the-most-useful-Swiss-army-knife-one-liners-on-Unix)
+于 [Quora](http://www.quora.com/What-are-some-time-saving-tips-that-every-Linux-user-should-know)，但考虑到这里的人们都具有学习的天赋且乐于接受别人的建议，使用 Github 来做这件事是更佳的选择。如果你在本文中发现了错误或者存在可以改善的地方，请果断提交 Issue 或 Pull Request！(当然在提交前请看一下必读节和已有的 PR/issue）。
 
 
-## Meta
+## 必读
 
-Scope:
+涵盖范围：
 
-- This guide is both for beginners and the experienced. The goals are *breadth* (everything important), *specificity* (give concrete examples of the most common case), and *brevity* (avoid things that aren't essential or digressions you can easily look up elsewhere). Every tip is essential in some situation or significantly saves time over alternatives.
-- This is written for Linux, with the exception of the "[OS X only](#os-x-only)" section. Many of the other items apply or can be installed on other Unices or MacOS (or even Cygwin).
-- The focus is on interactive Bash, though many tips apply to other shells and to general Bash scripting.
-- It includes both "standard" Unix commands as well as ones that require special package installs -- so long as they are important enough to merit inclusion.
+- 这篇文章对刚接触命令行的新手以及具有命令行使用经验的人都有用处。本文致力于做到*覆盖面广*（尽量包括一切重要的内容），*具体*（给出最常见的具体的例子）以及*简洁*（避免不必要的，或是可以在其他地方轻松查到的细枝末节）。每个技巧在特定情境下或是基本的，或是能显著节约时间。
+- 本文为 Linux 所写，除了[仅限 OS X 系统](#仅限-os-x-系统)节。其它节中的大部分内容都适用于其它 Unix 系统或 MacOS 系统，甚至 Cygwin。
+- 本文关注于交互式 Bash，尽管很多技巧也适用于其他 shell 或 Bash 脚本。
+- 本文包括了“标准的”Unix 命令和需要安装特定包的命令，只要它们足够重要。
 
-Notes:
+注意事项：
 
-- To keep this to one page, content is implicitly included by reference. You're smart enough to look up more detail elsewhere once you know the idea or command to Google. Use `apt-get`/`yum`/`dnf`/`pacman`/`pip`/`brew` (as appropriate) to install new programs.
-- Use [Explainshell](http://explainshell.com/) to get a helpful breakdown of what commands, options, pipes etc. do.
-
-
-## Basics
-
-- Learn basic Bash. Actually, type `man bash` and at least skim the whole thing; it's pretty easy to follow and not that long. Alternate shells can be nice, but Bash is powerful and always available (learning *only* zsh, fish, etc., while tempting on your own laptop, restricts you in many situations, such as using existing servers).
-
-- Learn at least one text-based editor well. Ideally Vim (`vi`), as there's really no competition for random editing in a terminal (even if you use Emacs, a big IDE, or a modern hipster editor most of the time).
-
-- Know how to read documentation with `man` (for the inquisitive, `man man` lists the section numbers, e.g. 1 is "regular" commands, 5 is files/conventions, and 8 are for administration). Find man pages with `apropos`. Know that some commands are not executables, but Bash builtins, and that you can get help on them with `help` and `help -d`.
-
-- Learn about redirection of output and input using `>` and `<` and pipes using `|`. Know `>` overwrites the output file and `>>` appends. Learn about stdout and stderr.
-
-- Learn about file glob expansion with `*` (and perhaps `?` and `[`...`]`) and quoting and the difference between double `"` and single `'` quotes. (See more on variable expansion below.)
-
-- Be familiar with Bash job management: `&`, **ctrl-z**, **ctrl-c**, `jobs`, `fg`, `bg`, `kill`, etc.
-
-- Know `ssh`, and the basics of passwordless authentication, via `ssh-agent`, `ssh-add`, etc.
-
-- Basic file management: `ls` and `ls -l` (in particular, learn what every column in `ls -l` means), `less`, `head`, `tail` and `tail -f` (or even better, `less +F`), `ln` and `ln -s` (learn the differences and advantages of hard versus soft links), `chown`, `chmod`, `du` (for a quick summary of disk usage: `du -hs *`). For filesystem management, `df`, `mount`, `fdisk`, `mkfs`, `lsblk`. Learn what an inode is (`ls -i` or `df -i`).
-
-- Basic network management: `ip` or `ifconfig`, `dig`.
-
-- Know regular expressions well, and the various flags to `grep`/`egrep`. The `-i`, `-o`, `-v`, `-A`, `-B`, and `-C` options are worth knowing.
-
-- Learn to use `apt-get`, `yum`, `dnf` or `pacman` (depending on distro) to find and install packages. And make sure you have `pip` to install Python-based command-line tools (a few below are easiest to install via `pip`).
+- 为了能在一页内展示尽量多的东西，一些具体的信息会被间接的包含在引用页里。聪明机智的你如果掌握了使用 Google 搜索引擎的基本思路与命令，那么你将可以查阅到更多的详细信息。使用 `apt-get`／`yum`／`dnf`／`pacman`／`pip`／`brew`（以及其它合适的包管理器）来安装新程序。
+- 使用 [Explainshell](http://explainshell.com/) 去获取相关命令、参数、管道等内容的解释。
 
 
-## Everyday use
+## 基础
 
-- In Bash, use **Tab** to complete arguments or list all available commands and **ctrl-r** to search through command history (after pressing, type to search, press **ctrl-r** repeatedly to cycle through more matches, press **Enter** to execute the found command, or hit the right arrow to put the result in the current line to allow editing).
+- 学习 Bash 的基础知识。具体来说，输入 `man bash` 并至少全文浏览一遍; 它很简单并且不长。其他的 shell 可能很好用，但 Bash 功能强大且几乎所有情况下都是可用的 （ *只*学习 zsh，fish 或其他的 shell 的话，在你自己的电脑上会显得很方便，但在很多情况下会限制你，比如当你需要在服务器上工作时）。
 
-- In Bash, use **ctrl-w** to delete the last word, and **ctrl-u** to delete all the way back to the start of the line. Use **alt-b** and **alt-f** to move by word, **ctrl-a** to move cursor to beginning of line,  **ctrl-e** to move cursor to end of line, **ctrl-k** to kill to the end of the line, **ctrl-l** to clear the screen. See `man readline` for all the default keybindings in Bash. There are a lot. For example **alt-.** cycles through previous arguments, and **alt-*** expands a glob.
+- 学习并掌握至少一个基于文本的编辑器。通常 Vim （`vi`） 会是你最好的选择，因为在终端里进行随机编辑 Vim 真的毫无敌手，哪怕是 Emacs、某大型 IDE 甚至时下非常流行的编辑器。
+
+- 学会如何使用 `man` 命令去阅读文档。学会使用 `apropos` 去查找文档。了解有些命令并不对应可执行文件，而是Bash内置的，可以使用 `help` 和 `help -d` 命令获取帮助信息。
+
+- 学会使用 `>` 和 `<` 来重定向输出和输入，学会使用 `|` 来重定向管道。明白 `>` 会覆盖了输出文件而 `>>` 是在文件末添加。了解标准输出 stdout 和标准错误 stderr。
+
+- 学会使用通配符 `*` （或许再算上 `?` 和 `[`...`]`） 和引用以及引用中 `'` 和 `"` 的区别。
+
+- 熟悉 Bash 任务管理工具：`&`，**ctrl-z**，**ctrl-c**，`jobs`，`fg`，`bg`，`kill` 等。
+
+- 了解 `ssh`，以及学会通过使用 `ssh-agent`，`ssh-add` 等命令来实现基本的无密码认证。
+
+- 学会基本的文件管理：`ls` 和 `ls -l` （了解 `ls -l` 中每一列代表的意义），`less`，`head`，`tail` 和 `tail -f` （甚至 `less +F`），`ln` 和 `ln -s` （了解硬链接与软链接的区别），`chown`，`chmod`，`du` （硬盘使用情况概述：`du -hs *`）。 关于文件系统的管理，学习 `df`，`mount`，`fdisk`，`mkfs`，`lsblk`。知道 inode 是什么（与 `ls -i` 和 `df -i` 等命令相关）。
+
+- 学习基本的网络管理：`ip` 或 `ifconfig`，`dig`。
+
+- 熟悉正则表达式，以及 `grep`／`egrep` 里不同参数的作用，例如 `-i`，`-o`，`-v`，`-A`，`-B` 和 `-C`，这些参数是值得学习并掌握的。
+
+- 学会使用 `apt-get`，`yum`，`dnf` 或 `pacman` （取决于你使用的 Linux 发行版）来查找或安装软件包。并确保你的环境中有 `pip` 来安装基于 Python 的命令行工具 （接下来提到的部分程序使用 `pip` 来安装会很方便）。
 
 
-- Alternatively, if you love vi-style key-bindings, use `set -o vi` (and `set -o emacs` to put it back).
+## 日常使用
 
-- For editing long commands, after setting your editor (for example `export EDITOR=vim`), **ctrl-x** **ctrl-e** will open the current command in an editor for multi-line editing. Or in vi style, **escape-v**.
+- 在 Bash 中，可以使用 **Tab** 自动补全参数，使用 **ctrl-r** 搜索命令行历史（在按下之后，键入便可以搜索，重复按下 **ctrl-r** 会在更多匹配中循环，按下 **Enter** 会执行找到的命令，按下右方向键会将结果放入当前行中，使你可以进行编辑）。
 
-- To see recent commands, `history`. There are also many abbreviations such as `!$` (last argument) and `!!` last command, though these are often easily replaced with **ctrl-r** and **alt-.**.
+- 在 Bash 中，可以使用 **ctrl-w** 删除你键入的最后一个单词，使用 **ctrl-u** 删除整行，使用 **alt-b** 和 **alt-f** 以单词为单位移动光标，使用 **ctrl-a** 将光标移至行首，使用 **ctrl-e** 将光标移至行尾，使用 **ctrl-k** 删除光标至行尾的所有内容，使用 **ctrl-l** 清屏。键入 `man readline` 查看 Bash 中的默认快捷键，内容很多。例如 **alt-.** 循环地移向前一个参数，以及 **alt-*** 展开通配符。
 
-- To go back to the previous working directory: `cd -`
+- 你喜欢的话，可以键入 `set -o vi` 来使用 vi 风格的快捷键，而 `set -o emacs` 可以把它改回来。
 
-- If you are halfway through typing a command but change your mind, hit **alt-#** to add a `#` at the beginning and enter it as a comment (or use **ctrl-a**, **#**, **enter**). You can then return to it later via command history.
+- 为了方便地键入长命令，在设置你的编辑器后（例如 `export EDITOR=vim`），键入 **ctrl-x** **ctrl-e** 会打开一个编辑器来编辑当前命令。在 vi 模式下则键入 **escape-v** 实现相同的功能。
 
-- Use `xargs` (or `parallel`). It's very powerful. Note you can control how many items execute per line (`-L`) as well as parallelism (`-P`). If you're not sure if it'll do the right thing, use `xargs echo` first. Also, `-I{}` is handy. Examples:
+- 键入 `history` 查看命令行历史记录。其中有许多缩写，例如 `!$`（最后键入的参数）和 `!!`（最后键入的命令），尽管通常被 **ctrl-r** 和 **alt-.** 取代。
+
+- 回到上一个工作路径：`cd -`
+
+- 如果你输入命令的时候改变了主意，按下 **alt-#** 来在行首添加 `#`，或者依次按下 **ctrl-a**， **#**， **enter**。这样做的话，之后你可以很方便的利用命令行历史回到你刚才输入到一半的命令。
+
+- 使用 `xargs` （ 或 `parallel`）。他们非常给力。注意到你可以控制每行参数个数（`-L`）和最大并行数（`-P`）。如果你不确定它们是否会按你想的那样工作，先使用 `xargs echo` 查看一下。此外，使用 `-I{}` 会很方便。例如：
 ```bash
       find . -name '*.py' | xargs grep some_function
       cat hosts | xargs -I{} ssh root@{} hostname
 ```
 
-- `pstree -p` is a helpful display of the process tree.
+- `pstree -p` 有助于展示进程树。
 
-- Use `pgrep` and `pkill` to find or signal processes by name (`-f` is helpful).
+- 使用 `pgrep` 和 `pkill` 根据名字查找进程或发送信号（`-f` 参数通常有用）。
 
-- Know the various signals you can send processes. For example, to suspend a process, use `kill -STOP [pid]`. For the full list, see `man 7 signal`
+- 了解你可以发往进程的信号的种类。比如，使用 `kill -STOP [pid]` 停止一个进程。使用 `man 7 signal` 查看详细列表。
 
-- Use `nohup` or `disown` if you want a background process to keep running forever.
+- 使用 `nohup` 或 `disown` 使一个后台进程持续运行。
 
-- Check what processes are listening via `netstat -lntp` or `ss -plat` (for TCP; add `-u` for UDP).
+- 使用 `netstat -lntp` 或 `ss -plat` 检查哪些进程在监听端口（默认是检查 TCP 端口; 使用参数 `-u` 检查 UDP 端口）。
 
-- See also `lsof` for open sockets and files.
+- 有关打开套接字和文件，请参阅 `lsof`。
 
-- See `uptime` or `w` to know the how long the system has been running.
+- 使用 `uptime` 或 `w` 来查看系统已经运行多长时间。
 
-- Use `alias` to create shortcuts for commonly used commands. For example, `alias ll='ls -latr'` creates a new alias `ll`.
+- 使用 `alias` 来创建常用命令的快捷形式。例如：`alias ll='ls -latr'` 使你可以方便地执行`ls -latr`命令。
 
-- In Bash scripts, use `set -x` (or the variant `set -v`, which logs raw input, including unexpanded variables and comments) for debugging output. Use strict modes unless you have a good reason not to: Use `set -e` to abort on errors (nonzero exit code). Use `set -u` to detect unset variable usages. Consider `set -o pipefail` too, to on errors within pipes, too (though read up on it more if you do, as this topic is a bit subtle). For more involved scripts, also use `trap` on EXIT or ERR. A useful habit is to start a script like this, which will make it detect and abort on common errors and print a message:
+- 在 Bash 脚本中，使用 `set -x` 去调试输出，尽可能的使用严格模式，使用 `set -e` 令脚本在发生错误时退出而不是继续运行，使用 `set -u` 来检查是否使用了未赋值的变量，使用 `set -o pipefail` 严谨地对待错误（尽管问题可能很微妙）。当牵扯到很多脚本时，使用 `trap`。一个好的习惯是在脚本文件开头这样写，这会使它检测一些错误，并在错误发生时中断程序并输出信息：
 ```bash
       set -euo pipefail
       trap "echo 'error: Script failed: see failed command above'" ERR
 ```
 
-- In Bash scripts, subshells (written with parentheses) are convenient ways to group commands. A common example is to temporarily move to a different working directory, e.g.
+- 在 Bash 脚本中，子 shell（使用括号 `(...)`）是一种组织参数的便捷方式。一个常见的例子是临时地移动工作路径，代码如下：
 ```bash
       # do something in current dir
       (cd /some/other/dir && other-command)
       # continue in original dir
 ```
 
-- In Bash, note there are lots of kinds of variable expansion. Checking a variable exists: `${name:?error message}`. For example, if a Bash script requires a single argument, just write `input_file=${1:?usage: $0 input_file}`. Arithmetic expansion: `i=$(( (i + 1) % 5 ))`. Sequences: `{1..10}`. Trimming of strings: `${var%suffix}` and `${var#prefix}`. For example if `var=foo.pdf`, then `echo ${var%.pdf}.txt` prints `foo.txt`.
+- 在 Bash 中，要注意其中有许多形式的扩展。检查变量是否存在：`${name:?error message}`。例如，当 Bash 脚本需要一个参数时，可以使用这样的代码 `input_file=${1:?usage: $0 input_file}`。数学表达式：`i=$(( (i + 1) % 5 ))`。序列：`{1..10}`。截断字符串：`${var%suffix}` 和 `${var#prefix}`。例如，假设 `var=foo.pdf`，那么 `echo ${var%.pdf}.txt` 将输出 `foo.txt`。
 
-- Brace expansion using `{`...`}` can reduce having to re-type similar text and automate combinations of items.  This is helpful in examples like `mv foo.{txt,pdf} some-dir` (which moves both files), `cp somefile{,.bak}` (which expands to `cp somefile somefile.bak`) or `mkdir -p test-{a,b,c}/subtest-{1,2,3}` (which expands all possible combinations and creates a directory tree).
+- 使用括号扩展（`{`...`}`）来减少输入相似文本，并自动化文本组合。这在某些情况下会很有用，例如 `mv foo.{txt,pdf} some-dir`（同时移动两个文件），`cp somefile{,.bak}`（会被扩展成 `cp somefile somefile.bak`）或者 `mkdir -p test-{a,b,c}/subtest-{1,2,3}`（会被扩展成所有可能的组合，并创建一个目录树）。
 
-- The output of a command can be treated like a file via `<(some command)`. For example, compare local `/etc/hosts` with a remote one:
+- 通过使用 `<(some command)` 可以将输出视为文件。例如，对比本地文件 `/etc/hosts` 和一个远程文件：
 ```sh
       diff /etc/hosts <(ssh somehost cat /etc/hosts)
 ```
 
-- Know about "here documents" in Bash, as in `cat <<EOF ...`.
+- 了解 Bash 中的“here documents”，例如 `cat <<EOF ...`。
 
-- In Bash, redirect both standard output and standard error via: `some-command >logfile 2>&1` or `some-command &>logfile`. Often, to ensure a command does not leave an open file handle to standard input, tying it to the terminal you are in, it is also good practice to add `</dev/null`.
+- 在 Bash 中，同时重定向标准输出和标准错误，`some-command >logfile 2>&1`。通常，为了保证命令不会在标准输入里残留一个打开了的文件句柄导致你当前所在的终端无法操作，添加 `</dev/null` 是一个好习惯。
 
-- Use `man ascii` for a good ASCII table, with hex and decimal values. For general encoding info, `man unicode`, `man utf-8`, and `man latin1` are helpful.
+- 使用 `man ascii` 查看具有十六进制和十进制值的ASCII表。`man unicode`，`man utf-8`，以及 `man latin1` 有助于你去了解通用的编码信息。
 
-- Use `screen` or [`tmux`](https://tmux.github.io/) to multiplex the screen, especially useful on remote ssh sessions and to detach and re-attach to a session. `byobu` can enhance screen or tmux providing more information and easier management. A more minimal alternative for session persistence only is `dtach`.
+- 使用 `screen` 或 [`tmux`](https://tmux.github.io/) 来使用多个屏幕，当你在使用 ssh 时（保存 session 信息）将尤为有用。另一个轻量级的解决方案是 `dtach`。
 
-- In ssh, knowing how to port tunnel with `-L` or `-D` (and occasionally `-R`) is useful, e.g. to access web sites from a remote server.
+- ssh 中，了解如何使用 `-L` 或 `-D`（偶尔需要用 `-R`）去开启隧道是非常有用的，例如当你需要从一台远程服务器上访问 web。
 
-- It can be useful to make a few optimizations to your ssh configuration; for example, this `~/.ssh/config` contains settings to avoid dropped connections in certain network environments, uses compression (which is helpful with scp over low-bandwidth connections), and multiplex channels to the same server with a local control file:
+- 对 ssh 设置做一些小优化可能是很有用的，例如这个 `~/.ssh/config` 文件包含了防止特定环境下断开连接、压缩数据、多通道等选项：
 ```
       TCPKeepAlive=yes
       ServerAliveInterval=15
@@ -153,63 +151,62 @@ Notes:
       ControlPersist yes
 ```
 
-- A few other options relevant to ssh are security sensitive and should be enabled with care, e.g. per subnet or host or in trusted networks: `StrictHostKeyChecking=no`, `ForwardAgent=yes`
+- 部分其他的关于 ssh 的选项是安全敏感且应当小心启用的。例如在可信任的网络中：`StrictHostKeyChecking=no`，`ForwardAgent=yes`
 
-- Consider [`mosh`](https://mosh.mit.edu/) an alternative to ssh that uses UDP, avoiding dropped connections and adding convenience on the road (requires server-side setup).
+- 考虑使用 [`mosh`](https://mosh.mit.edu/) 作为 ssh 的替代品，它使用 UDP 协议。
 
-- To get the permissions on a file in octal form, which is useful for system configuration but not available in `ls` and easy to bungle, use something like
+- 获取文件的八进制格式权限，使用类似如下的代码：
 ```sh
       stat -c '%A %a %n' /etc/timezone
 ```
 
-- For interactive selection of values from the output of another command, use [`percol`](https://github.com/mooz/percol) or [`fzf`](https://github.com/junegunn/fzf).
+- 使用 [`percol`](https://github.com/mooz/percol) 或者 [`fzf`](https://github.com/junegunn/fzf) 可以交互式地从另一个命令输出中选取值。
 
-- For interaction with files based on the output of another command (like `git`), use `fpp` ([PathPicker](https://github.com/facebook/PathPicker)).
+- 使用 `fpp`（[PathPicker](https://github.com/facebook/PathPicker)）可以与基于另一个命令(例如 `git`）输出的文件交互。
 
-- For a simple web server for all files in the current directory (and subdirs), available to anyone on your network, use:
-`python -m SimpleHTTPServer 7777` (for port 7777 and Python 2) and `python -m http.server 7777` (for port 7777 and Python 3).
+- 将 web 服务器上当前目录下所有的文件（以及子目录）暴露给你所处网络的所有用户，使用：
+`python -m SimpleHTTPServer 7777` （使用端口 7777 和 Python 2）或`python -m http.server 7777` （使用端口 7777 和 Python 3）。
 
-- For running a command with privileges, use `sudo` (for root) or `sudo -u` (for another user). Use `su` or `sudo bash` to actually run a shell as that user. Use `su -` to simulate a fresh login as root or another user.
+- 以某种权限执行命令，使用`sudo`（root 权限）或`sudo -u`（其他用户）。使用`su`或者`sudo bash`来启动一个以对应用户权限运行的 shell。使用`su -`模拟其他用户的登录。
 
+## 文件及数据处理
 
-## Processing files and data
+- 在当前路径下通过文件名定位一个文件，`find . -iname '*something*'`（或类似的）。在所有路径下通过文件名查找文件，使用 `locate something` （但请记住 `updatedb` 可能没有对最近新建的文件建立索引）。
 
-- To locate a file by name in the current directory, `find . -iname '*something*'` (or similar). To find a file anywhere by name, use `locate something` (but bear in mind `updatedb` may not have indexed recently created files).
+- 使用 [`ag`](https://github.com/ggreer/the_silver_searcher) 在源代码或数据文件里检索（比 `grep -r` 更好）。
 
-- For general searching through source or data files (more advanced than `grep -r`), use [`ag`](https://github.com/ggreer/the_silver_searcher).
+- 将 HTML 转为文本：`lynx -dump -stdin`
 
-- To convert HTML to text: `lynx -dump -stdin`
+- Markdown，HTML，以及所有文档格式之间的转换，试试 [`pandoc`](http://pandoc.org/)。
 
-- For Markdown, HTML, and all kinds of document conversion, try [`pandoc`](http://pandoc.org/).
+- 如果你不得不处理 XML，`xmlstarlet` 宝刀未老。
 
-- If you must handle XML, `xmlstarlet` is old but good.
+- 使用 [`jq`](http://stedolan.github.io/jq/) 处理 JSON。
 
-- For JSON, use [`jq`](http://stedolan.github.io/jq/).
+- 使用 [`shyaml`](https://github.com/0k/shyaml) 处理 YAML。
 
-- For YAML, use [`shyaml`](https://github.com/0k/shyaml).
+- Excel 或 CSV 文件的处理，[csvkit](https://github.com/onyxfish/csvkit) 提供了 `in2csv`，`csvcut`，`csvjoin`，`csvgrep` 等工具。
 
-- For Excel or CSV files, [csvkit](https://github.com/onyxfish/csvkit) provides `in2csv`, `csvcut`, `csvjoin`, `csvgrep`, etc.
+- 关于 Amazon S3，[`s3cmd`](https://github.com/s3tools/s3cmd) 很方便而 [`s4cmd`](https://github.com/bloomreach/s4cmd) 更快。Amazon 官方的 [`aws`](https://github.com/aws/aws-cli) 以及  [`saws`](https://github.com/donnemartin/saws) 是其他 AWS 相关工作的基础。
 
-- For Amazon S3, [`s3cmd`](https://github.com/s3tools/s3cmd) is convenient and [`s4cmd`](https://github.com/bloomreach/s4cmd) is faster. Amazon's [`aws`](https://github.com/aws/aws-cli) and the improved [`saws`](https://github.com/donnemartin/saws) are essential for other AWS-related tasks.
+- 了解如何使用 `sort` 和 `uniq`，包括 uniq 的 `-u` 参数和 `-d` 参数，详见后文单行脚本节。另外可以了解一下 `comm`。
 
-- Know about `sort` and `uniq`, including uniq's `-u` and `-d` options -- see one-liners below. See also `comm`.
+- 了解如何使用 `cut`，`paste` 和 `join` 来更改文件。很多人都会使用 `cut`，但几乎都不会使用 `join`。
 
-- Know about `cut`, `paste`, and `join` to manipulate text files. Many people use `cut` but forget about `join`.
+- 了解如何运用 `wc` 去计算新行数（`-l`），字符数（`-m`），单词数（`-w`）以及字节数（`-c`）。
 
-- Know about `wc` to count newlines (`-l`), characters (`-m`), words (`-w`) and bytes (`-c`).
+- 了解如何使用 `tee` 将标准输入复制到文件甚至标准输出，例如 `ls -al | tee file.txt`。
 
-- Know about `tee` to copy from stdin to a file and also to stdout, as in `ls -al | tee file.txt`.
+- 了解语言环境对许多命令行工具的微妙影响，包括排序的顺序和性能。大多数 Linux 的安装过程会将 `LANG` 或其他有关的变量设置为符合本地的设置。意识到当你改变语言环境时，排序的结果可能会改变。明白国际化可能会使 sort 或其他命令运行效率下降*许多倍*。某些情况下（例如集合运算）你可以放心的使用 `export LC_ALL=C` 来忽略掉国际化并使用基于字节的顺序。
 
-- Know that locale affects a lot of command line tools in subtle ways, including sorting order (collation) and performance. Most Linux installations will set `LANG` or other locale variables to a local setting like US English. But be aware sorting will change if you change locale. And know i18n routines can make sort or other commands run *many times* slower. In some situations (such as the set operations or uniqueness operations below) you can safely ignore slow i18n routines entirely and use traditional byte-based sort order, using `export LC_ALL=C`.
+- 了解 `awk` 和 `sed` 关于数据的简单处理的用法。例如，将文本文件中第三列的所有数字求和：`awk '{ x += $3 } END { print x }'`. 这可能比同等作用的 Python 代码快三倍且代码量少三倍。
 
-- Know basic `awk` and `sed` for simple data munging. For example, summing all numbers in the third column of a text file: `awk '{ x += $3 } END { print x }'`. This is probably 3X faster and 3X shorter than equivalent Python.
-
-- To replace all occurrences of a string in place, in one or more files:
+- 替换一个或多个文件中出现的字符串：
 ```sh
       perl -pi.bak -e 's/old-string/new-string/g' my-files-*.txt
 ```
 
-- To rename multiple files and/or search and replace within files, try [`repren`](https://github.com/jlevy/repren). (In some cases the `rename` command also allows multiple renames, but be careful as its functionality is not the same on all Linux distributions.)
+- 使用 [`repren`](https://github.com/jlevy/repren) 来批量重命名，或是在多个文件中搜索替换。（有些时候 `rename` 命令也可以批量重命名，但要注意，它在不同 Linux 发行版中的功能并不完全一样。）
 ```sh
       # Full rename of filenames, directories, and contents foo -> bar:
       repren --full --preserve-case --from foo --to bar .
@@ -219,110 +216,107 @@ Notes:
       rename 's/\.bak$//' *.bak
 ```
 
-- As the man page says, `rsync` really is a fast and extraordinarily versatile file copying tool. It's known for synchronizing between machines but is equally useful locally. It also is among the [fastest ways](https://web.archive.org/web/20130929001850/http://linuxnote.net/jianingy/en/linux/a-fast-way-to-remove-huge-number-of-files.html) to delete large numbers of files:
+- 根据 man 页面的描述，`rsync` 真的是一个快速且非常灵活的文件复制工具。它通常被用于机器间的同步，但在本地也同样有用。它同时也是删除大量文件的[最快方法](https://web.archive.org/web/20130929001850/http://linuxnote.net/jianingy/en/linux/a-fast-way-to-remove-huge-number-of-files.html)之一：
 ```sh
 mkdir empty && rsync -r --delete empty/ some-dir && rmdir some-dir
 ```
 
-- Use `shuf` to shuffle or select random lines from a file.
+- 使用 `shuf` 从一个文件中随机选取多行。
 
-- Know `sort`'s options. For numbers, use `-n`, or `-h` for handling human-readable numbers (e.g. from `du -h`). Know how keys work (`-t` and `-k`). In particular, watch out that you need to write `-k1,1` to sort by only the first field; `-k1` means sort according to the whole line. Stable sort (`sort -s`) can be useful. For example, to sort first by field 2, then secondarily by field 1, you can use `sort -k1,1 | sort -s -k2,2`.
+- 了解 `sort` 的参数。处理数字方面，使用 `-n` 或者 `-h` 来处理可读性数字（例如 `du -h` 的输出）。明白键的工作原理（`-t` 和 `-k`）。例如，注意到你需要 `-k1，1` 来仅按第一个域来排序，而 `-k1` 意味着按整行排序。稳定排序（`sort -s`）在某些情况下很有用。例如，以第二个域为主关键字，第一个域为次关键字进行排序，你可以使用 `sort -k1，1 | sort -s -k2，2`。
 
-- If you ever need to write a tab literal in a command line in Bash (e.g. for the -t argument to sort), press **ctrl-v** **[Tab]** or write `$'\t'` (the latter is better as you can copy/paste it).
+- 如果你想在 Bash 命令行中写 tab 制表符，按下 **ctrl-v** **[Tab]** 或键入 `$'\t'` （后者可能更好，因为你可以复制粘贴它）。
 
-- The standard tools for patching source code are `diff` and `patch`. See also `diffstat` for summary statistics of a diff and `sdiff` for a side-by-side diff. Note `diff -r` works for entire directories. Use `diff -r tree1 tree2 | diffstat` for a summary of changes. Use `vimdiff` to compare and edit files.
+- 标准的源代码对比及合并工具是 `diff` 和 `patch`。使用 `diffstat` 查看变更总览数据。注意到 `diff -r` 对整个文件夹有效。使用 `diff -r tree1 tree2 | diffstat` 查看变更总览数据。
 
-- For binary files, use `hd`, `hexdump` or `xxd` for simple hex dumps and `bvi` or `biew` for binary editing.
+- 对于二进制文件，使用 `hd` 使其以十六进制显示以及使用 `bvi` 来编辑二进制。
 
-- Also for binary files, `strings` (plus `grep`, etc.) lets you find bits of text.
+- 同样对于二进制文件，`strings`（包括 `grep` 等等）允许你查找一些文本。
 
-- For binary diffs (delta compression), use `xdelta3`.
+- 二进制文件对比（Delta 压缩），使用 `xdelta3`。
 
-- To convert text encodings, try `iconv`. Or `uconv` for more advanced use; it supports some advanced Unicode things. For example, this command lowercases and removes all accents (by expanding and dropping them):
+- 使用 `iconv` 更改文本编码。而更高级的用法，可以使用 `uconv`，它支持一些高级的 Unicode 功能。例如，这条命令将所有元音字母转为小写并移除了：
 ```sh
       uconv -f utf-8 -t utf-8 -x '::Any-Lower; ::Any-NFD; [:Nonspacing Mark:] >; ::Any-NFC; ' < input.txt > output.txt
 ```
 
-- To split files into pieces, see `split` (to split by size) and `csplit` (to split by a pattern).
+- 拆分文件，查看 `split`（按大小拆分）和 `csplit`（按模式拆分）。
 
-- To manipulate date and time expressions, use `dateadd`, `datediff`, `strptime` etc. from [`dateutils`](http://www.fresse.org/dateutils/).
+- 用 [`dateutils`](http://www.fresse.org/dateutils/) 中的 `dateadd`, `datediff`, `strptime` 等工具操作日期和时间表达式。
 
-- Use `zless`, `zmore`, `zcat`, and `zgrep` to operate on compressed files.
-
-
-## System debugging
-
-- For web debugging, `curl` and `curl -I` are handy, or their `wget` equivalents, or the more modern [`httpie`](https://github.com/jkbrzt/httpie).
-
-- To know current cpu/disk status, the classic tools are `top` (or the better `htop`), `iostat`, and `iotop`. Use `iostat -mxz 15` for basic CPU and detailed per-partition disk stats and performance insight.
-
-- For network connection details, use `netstat` and `ss`.
-
-- For a quick overview of what's happening on a system, `dstat` is especially useful. For broadest overview with details, use [`glances`](https://github.com/nicolargo/glances).
-
-- To know memory status, run and understand the output of `free` and `vmstat`. In particular, be aware the "cached" value is memory held by the Linux kernel as file cache, so effectively counts toward the "free" value.
-
-- Java system debugging is a different kettle of fish, but a simple trick on Oracle's and some other JVMs is that you can run `kill -3 <pid>` and a full stack trace and heap summary (including generational garbage collection details, which can be highly informative) will be dumped to stderr/logs. The JDK's `jps`, `jstat`, `jstack`, `jmap` are useful. [SJK tools](https://github.com/aragozin/jvm-tools) are more advanced.
-
-- Use `mtr` as a better traceroute, to identify network issues.
-
-- For looking at why a disk is full, `ncdu` saves time over the usual commands like `du -sh *`.
-
-- To find which socket or process is using bandwidth, try `iftop` or `nethogs`.
-
-- The `ab` tool (comes with Apache) is helpful for quick-and-dirty checking of web server performance. For more complex load testing, try `siege`.
-
-- For more serious network debugging, `wireshark`, `tshark`, or `ngrep`.
-
-- Know about `strace` and `ltrace`. These can be helpful if a program is failing, hanging, or crashing, and you don't know why, or if you want to get a general idea of performance. Note the profiling option (`-c`), and the ability to attach to a running process (`-p`).
-
-- Know about `ldd` to check shared libraries etc.
-
-- Know how to connect to a running process with `gdb` and get its stack traces.
-
-- Use `/proc`. It's amazingly helpful sometimes when debugging live problems. Examples: `/proc/cpuinfo`, `/proc/meminfo`, `/proc/cmdline`, `/proc/xxx/cwd`, `/proc/xxx/exe`, `/proc/xxx/fd/`, `/proc/xxx/smaps` (where `xxx` is the process id or pid).
-
-- When debugging why something went wrong in the past, `sar` can be very helpful. It shows historic statistics on CPU, memory, network, etc.
-
-- For deeper systems and performance analyses, look at `stap` ([SystemTap](https://sourceware.org/systemtap/wiki)), [`perf`](https://en.wikipedia.org/wiki/Perf_(Linux)), and [`sysdig`](https://github.com/draios/sysdig).
-
-- Check what OS you're on with `uname` or `uname -a` (general Unix/kernel info) or `lsb_release -a` (Linux distro info).
-
-- Use `dmesg` whenever something's acting really funny (it could be hardware or driver issues).
+- 使用 `zless`，`zmore`，`zcat` 和 `zgrep` 对压缩过的文件进行操作。
 
 
-## One-liners
+## 系统调试
 
-A few examples of piecing together commands:
+- `curl` 和 `curl -I` 可以便捷地被应用于 web 调试中，它们的好兄弟 `wget` 也可以，或者是更潮的 [`httpie`](https://github.com/jakubroztocil/httpie)。
 
-- It is remarkably helpful sometimes that you can do set intersection, union, and difference of text files via `sort`/`uniq`. Suppose `a` and `b` are text files that are already uniqued. This is fast, and works on files of arbitrary size, up to many gigabytes. (Sort is not limited by memory, though you may need to use the `-T` option if `/tmp` is on a small root partition.) See also the note about `LC_ALL` above and `sort`'s `-u` option (left out for clarity below).
+- 使用 `iostat`、`netstat`、`top` （`htop` 更佳）和 `dstat` 去获取硬盘、cpu 和网络的状态。熟练掌握这些工具可以使你快速的对系统的当前状态有一个大概的认识。
+
+- 使用 `netstat` 和 `ss` 查看网络连接的细节。
+
+- 若要对系统有一个深度的总体认识，使用 [`glances`](https://github.com/nicolargo/glances)。它在一个终端窗口中向你提供一些系统级的数据。这对于快速的检查各个子系统非常有帮助。
+
+- 若要了解内存状态，运行并理解 `free` 和 `vmstat` 的输出。尤其注意“cached”的值，它指的是 Linux 内核用来作为文件缓存的内存大小，因此它与空闲内存无关。
+
+- Java 系统调试则是一件截然不同的事，一个可以用于 Oracle 的 JVM 或其他 JVM 上的调试的技巧是你可以运行 `kill -3 <pid>` 同时一个完整的栈轨迹和堆概述（包括 GC 的细节）会被保存到标准输出/日志文件。JDK 中的 `jps`，`jstat`，`jstack`，`jmap` 很有用。[SJK tools](https://github.com/aragozin/jvm-tools) 更高级.
+
+- 使用 `mtr` 去跟踪路由，用于确定网络问题。
+
+- 用 `ncdu` 来查看磁盘使用情况，它比常用的命令，如 `du -sh *`，更节省时间。
+
+- 查找正在使用带宽的套接字连接或进程，使用 `iftop` 或 `nethogs`。
+
+- `ab` 工具（捆绑于 Apache）可以简单粗暴地检查 web 服务器的性能。对于更复杂的负载测试，使用 `siege`。
+
+- `wireshark`，`tshark` 和 `ngrep` 可用于复杂的网络调试。
+
+- 了解 `strace` 和 `ltrace`。这俩工具在你的程序运行失败、挂起甚至崩溃，而你却不知道为什么或你想对性能有个总体的认识的时候是非常有用的。注意 profile 参数（`-c`）和附加到一个运行的进程参数 （`-p`）。
+
+- 了解使用 `ldd` 来检查共享库。
+
+- 了解如何运用 `gdb` 连接到一个运行着的进程并获取它的堆栈轨迹。
+
+- 学会使用 `/proc`。它在调试正在出现的问题的时候有时会效果惊人。比如：`/proc/cpuinfo`，`/proc/meminfo`，`/proc/cmdline`，`/proc/xxx/cwd`，`/proc/xxx/exe`，`/proc/xxx/fd/`，`/proc/xxx/smaps`（这里的 `xxx` 表示进程的 id 或 pid）。
+
+- 当调试一些之前出现的问题的时候，`sar` 非常有用。它展示了 cpu、内存以及网络等的历史数据。
+
+- 关于更深层次的系统分析以及性能分析，看看 `stap`（[SystemTap](https://sourceware.org/systemtap/wiki)），[`perf`](http://en.wikipedia.org/wiki/Perf_(Linux))，以及[`sysdig`](https://github.com/draios/sysdig)。
+
+- 查看你当前使用的系统，使用 `uname` ， `uname -a` （Unix／kernel 信息） 或者 `lsb_release -a` （Linux 发行版信息）。
+
+- 无论什么东西工作得很欢乐时试试 `dmesg`（可能是硬件或驱动问题）。
+
+
+## 单行脚本
+
+一些命令组合的例子：
+
+- 当你需要对文本文件做集合交、并、差运算时，结合使用 `sort`/`uniq` 很有帮助。假设 `a` 与 `b` 是两内容不同的文件。这种方式效率很高，并且在小文件和上G的文件上都能运用 （`sort` 不被内存大小约束，尽管在 `/tmp` 在一个小的根分区上时你可能需要 `-T` 参数），参阅前文中关于 `LC_ALL` 和 `sort` 的 `-u` 参数的部分。
 ```sh
       cat a b | sort | uniq > c   # c is a union b
       cat a b | sort | uniq -d > c   # c is a intersect b
       cat a b b | sort | uniq -u > c   # c is set difference a - b
 ```
 
-- Use `grep . *` to quickly examine the contents of all files in a directory (so each line is paired with the filename), or `head -100 *` (so each file has a heading). This can be useful for directories filled with config settings like those in `/sys`, `/proc`, `/etc`.
+- 使用 `grep . *`（每行都会附上文件名）或者 `head -100 *`（每个文件有一个标题）来阅读检查目录下所有文件的内容。这在检查一个充满配置文件的目录（如 `/sys`、`/proc`、`/etc`）时特别好用。
 
-
-- Summing all numbers in the third column of a text file (this is probably 3X faster and 3X less code than equivalent Python):
+- 计算文本文件第三列中所有数的和（可能比同等作用的 Python 代码快三倍且代码量少三倍）：
 ```sh
       awk '{ x += $3 } END { print x }' myfile
 ```
 
-- To see sizes/dates on a tree of files, this is like a recursive `ls -l` but is easier to read than `ls -lR`:
+- 如果你想在文件树上查看大小/日期，这可能看起来像递归版的 `ls -l` 但比 `ls -lR` 更易于理解：
 ```sh
       find . -type f -ls
 ```
 
-- Say you have a text file, like a web server log, and a certain value that appears on some lines, such as an `acct_id` parameter that is present in the URL. If you want a tally of how many requests for each `acct_id`:
+- 假设你有一个类似于 web 服务器日志文件的文本文件，并且一个确定的值只会出现在某些行上，假设一个 `acct_id` 参数在URI中。如果你想计算出每个 `acct_id` 值有多少次请求，使用如下代码：
 ```sh
       cat access.log | egrep -o 'acct_id=[0-9]+' | cut -d= -f2 | sort | uniq -c | sort -rn
 ```
 
-- To continuously monitor changes, use `watch`, e.g. check changes to files in a directory with `watch -d -n 2 'ls -rtlh | tail'` or to network settings while troubleshooting your wifi settings with `watch -d -n 2 ifconfig`.
-
-- Run this function to get a random tip from this document (parses Markdown and extracts an item):
+- 运行这个函数从这篇文档中随机获取一条技巧（解析 Markdown 文件并抽取项目）：
 ```sh
       function taocl() {
         curl -s https://raw.githubusercontent.com/jlevy/the-art-of-command-line/master/README.md |
@@ -334,194 +328,191 @@ A few examples of piecing together commands:
 ```
 
 
-## Obscure but useful
+## 冷门但有用
 
-- `expr`: perform arithmetic or boolean operations or evaluate regular expressions
+- `expr`：计算表达式或正则匹配
 
-- `m4`: simple macro processor
+- `m4`：简单地宏处理器
 
-- `yes`: print a string a lot
+- `yes`：多次打印字符串
 
-- `cal`: nice calendar
+- `cal`：漂亮的日历
 
-- `env`: run a command (useful in scripts)
+- `env`：执行一个命令（脚本文件中很有用）
 
-- `printenv`: print out environment variables (useful in debugging and scripts)
+- `printenv`：打印环境变量（调试时或在使用脚本文件时很有用）
 
-- `look`: find English words (or lines in a file) beginning with a string
+- `look`：查找以特定字符串开头的单词
 
-- `cut`, `paste` and `join`: data manipulation
+- `cut`、`paste` 和 `join`：数据修改
 
-- `fmt`: format text paragraphs
+- `fmt`：格式化文本段落
 
-- `pr`: format text into pages/columns
+- `pr`：将文本格式化成页/列形式
 
-- `fold`: wrap lines of text
+- `fold`：包裹文本中的几行
 
-- `column`: format text fields into aligned, fixed-width columns or tables
+- `column`：将文本格式化成多列或表格
 
-- `expand` and `unexpand`: convert between tabs and spaces
+- `expand` 和 `unexpand`：制表符与空格之间转换
 
-- `nl`: add line numbers
+- `nl`：添加行号
 
-- `seq`: print numbers
+- `seq`：打印数字
 
-- `bc`: calculator
+- `bc`：计算器
 
-- `factor`: factor integers
+- `factor`：分解因数
 
-- [`gpg`](https://gnupg.org/): encrypt and sign files
+- [`gpg`](https://gnupg.org/)：加密并签名文件
 
-- `toe`: table of terminfo entries
+- `toe`：terminfo entries 列表
 
-- `nc`: network debugging and data transfer
+- `nc`：网络调试及数据传输
 
-- `socat`: socket relay and tcp port forwarder (similar to `netcat`)
+- `socat`：套接字代理，与 `netcat` 类似
 
-- [`slurm`](https://github.com/mattthias/slurm): network traffic visualization
+- [`slurm`](https://github.com/mattthias/slurm)：网络可视化
 
-- `dd`: moving data between files or devices
+- `dd`：文件或设备间传输数据
 
-- `file`: identify type of a file
+- `file`：确定文件类型
 
-- `tree`: display directories and subdirectories as a nesting tree; like `ls` but recursive
+- `tree`：以树的形式显示路径和文件，类似于递归的 `ls`
 
-- `stat`: file info
+- `stat`：文件信息
 
-- `time`: execute and time a command
+- `time`：执行命令，并计算执行时间
 
-- `timeout`: execute a command for specified amount of time and stop the process when the specified amount of time completes.
+- `lockfile`：使文件只能通过 `rm -f` 移除
 
-- `lockfile`: create semaphore file that can only be removed by `rm -f`
+- `logrotate`: 切换、压缩以及发送日志文件
 
-- `logrotate`: rotate, compress and mail logs.
+- `watch`：重复运行同一个命令，展示结果并高亮有更改的部分
 
-- `watch`: run a command repeatedly, showing results and/or highlighting changes
+- `tac`：反向输出文件
 
-- `tac`: print files in reverse
+- `shuf`：文件中随机选取几行
 
-- `shuf`: random selection of lines from a file
+- `comm`：一行一行的比较排序过的文件
 
-- `comm`: compare sorted files line by line
+- `pv`：监视通过管道的数据
 
-- `pv`: monitor the progress of data through a pipe
+- `hd`，`hexdump`，`xxd`，`biew` 和 `bvi`：保存或编辑二进制文件
 
-- `hd`, `hexdump`, `xxd`, `biew` and `bvi`: dump or edit binary files
+- `strings`：从二进制文件中抽取文本
 
-- `strings`: extract text from binary files
+- `tr`：转换字母
 
-- `tr`: character translation or manipulation
+- `iconv` 或 `uconv`：简易的文件编码
 
-- `iconv` or `uconv`: conversion for text encodings
+- `split` 和 `csplit`：分割文件
 
-- `split` and `csplit`: splitting files
+- `sponge`：在写入前读取所有输入，在读取文件后再向同一文件写入时比较有用，例如 `grep -v something some-file | sponge some-file`
 
-- `sponge`: read all input before writing it, useful for reading from then writing to the same file, e.g., `grep -v something some-file | sponge some-file`
+- `units`：将一种计量单位转换为另一种等效的计量单位（参阅 `/usr/share/units/definitions.units`）
 
-- `units`: unit conversions and calculations; converts furlongs per fortnight to twips per blink (see also `/usr/share/units/definitions.units`)
+- `apg`：随机生成密码
 
-- `apg`: generates random passwords
+- `7z`：高比例的文件压缩
 
-- `7z`: high-ratio file compression
+- `ldd`：动态库信息
 
-- `ldd`: dynamic library info
+- `nm`：提取 obj 文件中的符号
 
-- `nm`: symbols from object files
+- `ab`：性能分析 web 服务器
 
-- `ab`: benchmarking web servers
+- `strace`：系统调用调试
 
-- `strace`: system call debugging
+- `mtr`：更好的网络调试跟踪工具
 
-- `mtr`: better traceroute for network debugging
+- `cssh`：可视化的并发 shell
 
-- `cssh`: visual concurrent shell
+- `rsync`：通过 ssh 或本地文件系统同步文件和文件夹
 
-- `rsync`: sync files and folders over SSH or in local file system
+- `wireshark` 和 `tshark`：抓包和网络调试工具
 
-- `wireshark` and `tshark`: packet capture and network debugging
+- `ngrep`：网络层的 grep
 
-- `ngrep`: grep for the network layer
+- `host` 和 `dig`：DNS 查找
 
-- `host` and `dig`: DNS lookups
+- `lsof`：列出当前系统打开文件的工具以及查看端口信息
 
-- `lsof`: process file descriptor and socket info
+- `dstat`：系统状态查看
 
-- `dstat`: useful system stats
+- [`glances`](https://github.com/nicolargo/glances)：高层次的多子系统总览
 
-- [`glances`](https://github.com/nicolargo/glances): high level, multi-subsystem overview
+- `iostat`：硬盘使用状态
 
-- `iostat`: Disk usage stats
+- `mpstat`: CPU 使用状态
 
-- `mpstat`: CPU usage stats
+- `vmstat`: 内存使用状态
 
-- `vmstat`: Memory usage stats
+- `htop`：top 的加强版
 
-- `htop`: improved version of top
+- `last`：登入记录
 
-- `last`: login history
+- `w`：查看处于登录状态的用户
 
-- `w`: who's logged on
+- `id`：用户/组 ID 信息
 
-- `id`: user/group identity info
+- `sar`：系统历史数据
 
-- `sar`: historic system stats
+- `iftop` 或 `nethogs`：套接字及进程的网络利用
 
-- `iftop` or `nethogs`: network utilization by socket or process
+- `ss`：套接字数据
 
-- `ss`: socket statistics
+- `dmesg`：引导及系统错误信息
 
-- `dmesg`: boot and system error messages
+- `sysctl`: 在内核运行时动态地查看和修改内核的运行参数
 
-- `sysctl`: view and configure Linux kernel parameters at run time
+- `hdparm`：SATA/ATA 磁盘更改及性能分析
 
-- `hdparm`: SATA/ATA disk manipulation/performance
+- `lsb_release`：Linux 发行版信息
 
-- `lsb_release`: Linux distribution info
+- `lsblk`：列出块设备信息：以树形展示你的磁盘以及磁盘分区信息
 
-- `lsblk`: list block devices: a tree view of your disks and disk paritions
+- `lshw`，`lscpu`，`lspci`，`lsusb` 和 `dmidecode`：查看硬件信息，包括 CPU、BIOS、RAID、显卡、USB设备等
 
-- `lshw`, `lscpu`, `lspci`, `lsusb`, `dmidecode`: hardware information, including CPU, BIOS, RAID, graphics, devices, etc.
+- `lsmod` 和 `modinfo`：列出内核模块，并显示其细节
 
-- `lsmod` and `modinfo`: List and show details of kernel modules.
+- `fortune`，`ddate` 和 `sl`：额，这主要取决于你是否认为蒸汽火车和莫名其妙的名人名言是否“有用”
 
-- `fortune`, `ddate`, and `sl`: um, well, it depends on whether you consider steam locomotives and Zippy quotations "useful"
+## 仅限 OS X 系统
 
+以下是*仅限于* MacOS 系统的技巧
 
-## OS X only
+- 用 `brew` （Homebrew）或者 `port` （MacPorts）进行包管理。这些可以用来在 Mac 系统上安装以上的大多数命令。
 
-These are items relevant *only* on MacOS.
+- 用 `pbcopy` 复制任何命令的输出到桌面应用，用 `pbpaste` 粘贴输入。
 
-- Package management with `brew` (Homebrew) and/or `port` (MacPorts). These can be used to install on MacOS many of the above commands.
+- 若要在 Mac OS 终端中将 Option 键视为 alt 键（例如在上面介绍的 **alt-b**, **alt-f** 等命令中用到），打开 偏好设置 -> 描述文件 -> 键盘 并勾选“使用 Option 键作为 Meta 键”。
 
-- Copy output of any command to a desktop app with `pbcopy` and paste input from one with `pbpaste`.
+- 用 `open` 或者 `open -a /Applications/Whatever.app` 使用桌面应用打开文件。
 
-- To enable the Option key in Mac OS Terminal as an alt key (such as used in the commands above like **alt-b**, **alt-f**, etc.), open Preferences -> Profiles -> Keyboard and select "Use Option as Meta key".
+- Spotlight： 用 `mdfind` 搜索文件，用 `mdls` 列出元数据（例如照片的 EXIF 信息）。
 
-- To open a file with a desktop app, use `open` or `open -a /Applications/Whatever.app`.
+- 注意 MacOS 系统是基于 BSD UNIX 的，许多命令（例如 `ps`，`ls`，`tail`，`awk`，`sed`）都和 Linux 中有些微的不同，这些极大的被 System V-style Unix 和 GNU 工具影响。你可以通过标题为 "BSD General Commands Manual" 的 man 页面发现这些不同。在有些情况下 GNU 版本的命令也可能被安装（例如 `gawk` 和 `gsed` 对应 GNU 中的 awk 和 sed ）。如果要写跨平台的 Bash 脚本，避免使用这些命令（例如，考虑 Python 或者 `perl` ）或者经过仔细的测试。
 
-- Spotlight: Search files with `mdfind` and list metadata (such as photo EXIF info) with `mdls`.
+- 用 `sw_vers` 获取 MacOS 的版本信息。
 
-- Be aware MacOS is based on BSD Unix, and many commands (for example `ps`, `ls`, `tail`, `awk`, `sed`) have many subtle variations from Linux, which is largely influenced by System V-style Unix and GNU tools. You can often tell the difference by noting a man page has the heading "BSD General Commands Manual." In some cases GNU versions can be installed, too (such as `gawk` and `gsed` for GNU awk and sed). If writing cross-platform Bash scripts, avoid such commands (for example, consider Python or `perl`) or test carefully.
 
-- To get MacOS release information, use `sw_vers`.
+## 更多资源
 
+- [awesome-shell](https://github.com/alebcay/awesome-shell)：一份精心组织的命令行工具及资源的列表。
+- [awesome-osx-command-line](https://github.com/herrbischoff/awesome-osx-command-line)：一份针对 Mac OS 命令行的更深入的指南。
+- [Strict mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/)：为了编写更好的脚本文件。
+- [shellcheck](https://github.com/koalaman/shellcheck)：一个静态 shell 脚本分析工具，本质上是 bash／sh／zsh 的 lint。
+- [Filenames and Pathnames in Shell](http://www.dwheeler.com/essays/filenames-in-shell.html)：有关如何在 shell 脚本里正确处理文件名的细枝末节。
 
-## More resources
 
-- [awesome-shell](https://github.com/alebcay/awesome-shell): A curated list of shell tools and resources.
-- [awesome-osx-command-line](https://github.com/herrbischoff/awesome-osx-command-line): A more in-depth guide for the Mac OS command line.
-- [Strict mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/) for writing better shell scripts.
-- [shellcheck](https://github.com/koalaman/shellcheck): A shell script static analysis tool. Essentially, lint for bash/sh/zsh.
-- [Filenames and Pathnames in Shell](http://www.dwheeler.com/essays/filenames-in-shell.html): The sadly complex minutiae on how to handle filenames correctly in shell scripts.
+## 免责声明
 
+除去特别微小的任务，编写代码是出于方便阅读的目的。能力往往伴随着责任。你 *可以* 在 Bash 中做一些事并不意味着你应该去做！;)
 
-## Disclaimer
 
-With the exception of very small tasks, code is written so others can read it. With power comes responsibility. The fact you *can* do something in Bash doesn't necessarily mean you should! ;)
-
-
-## License
+## 授权条款
 
 [![Creative Commons License](https://i.creativecommons.org/l/by-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-sa/4.0/)
 
-This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
+本文使用授权协议 [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)。
